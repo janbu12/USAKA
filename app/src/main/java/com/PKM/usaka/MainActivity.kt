@@ -11,6 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.PKM.usaka.features.auth.LoginScreen
+import com.PKM.usaka.features.auth.RegisterScreen
+import com.PKM.usaka.navigation.AppDestionations
 import com.PKM.usaka.ui.theme.USAKATheme
 
 class MainActivity : ComponentActivity() {
@@ -20,28 +26,33 @@ class MainActivity : ComponentActivity() {
         setContent {
             USAKATheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
+                    val navController = rememberNavController()
+
+                    NavHost(
+                        navController = navController,
+                        startDestination = AppDestionations.LOGIN_ROUTE,
                         modifier = Modifier.padding(innerPadding)
-                    )
+                    ) {
+                        composable(AppDestionations.LOGIN_ROUTE) {
+                            LoginScreen(
+                                onLoginSuccess = {},
+                                onRegisterClick = {
+                                    navController.navigate(AppDestionations.REGISTER_ROUTE)
+                                }
+                            )
+                        }
+
+                        composable(AppDestionations.REGISTER_ROUTE) {
+                            RegisterScreen(
+                                onRegisterSuccess = {},
+                                onLoginClick = {
+                                    navController.navigate(AppDestionations.LOGIN_ROUTE)
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    USAKATheme {
-        Greeting("Android")
     }
 }
