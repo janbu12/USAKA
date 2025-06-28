@@ -31,3 +31,5 @@ local.properties
 *.aar
 *.iws
 *.ipr
+
+app/google-services.json

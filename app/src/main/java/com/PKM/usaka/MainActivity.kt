@@ -35,7 +35,11 @@ class MainActivity : ComponentActivity() {
                     ) {
                         composable(AppDestionations.LOGIN_ROUTE) {
                             LoginScreen(
-                                onLoginSuccess = {},
+                                onLoginSuccess = {
+                                    navController.navigate(AppDestionations.HOME_ROUTE) {
+                                        popUpTo(AppDestionations.LOGIN_ROUTE) { inclusive = true }
+                                    }
+                                },
                                 onRegisterClick = {
                                     navController.navigate(AppDestionations.REGISTER_ROUTE)
                                 }
@@ -44,11 +48,19 @@ class MainActivity : ComponentActivity() {
 
                         composable(AppDestionations.REGISTER_ROUTE) {
                             RegisterScreen(
-                                onRegisterSuccess = {},
+                                onRegisterSuccess = {
+                                    navController.navigate(AppDestionations.LOGIN_ROUTE) {
+                                        popUpTo(AppDestionations.LOGIN_ROUTE) { inclusive = true }
+                                    }
+                                },
                                 onLoginClick = {
-                                    navController.navigate(AppDestionations.LOGIN_ROUTE)
+                                    navController.popBackStack()
                                 }
                             )
+                        }
+
+                        composable(AppDestionations.HOME_ROUTE) {
+                            Text(text = "Welcome to Home Screen!")
                         }
                     }
                 }
